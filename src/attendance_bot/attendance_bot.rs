@@ -36,7 +36,7 @@ impl<'a> AttendanceBot<'a> {
     }
 }
 
-impl<'a> EventHandler for TabelogBot<'a> {
+impl<'a> EventHandler for AttendanceBot<'a> {
 
     fn on_event(&mut self, cli: &RtmClient, event: Event) {
 
@@ -45,7 +45,10 @@ impl<'a> EventHandler for TabelogBot<'a> {
         maybe_message.iter()
             .zip(maybe_channel.iter())
             .filter(|&(message, _)| self.to_me(message.as_str()))
-            .map(|(message, channel)| (message.replace(format!("{} ", TabelogBot::NAME).as_str(), ""), channel))
+            .map(|(message, channel)| (message.replace(format!("{} ", AttendanceBot::NAME).as_str(), ""), channel))
+            .map(|type_string, channel| (AttendanceType.from(type_string), channel))
+            .for_each(|(attendance_type, channel)| {
+            })
     }
 
     fn on_close(&mut self, _: &RtmClient) {}
