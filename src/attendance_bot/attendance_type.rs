@@ -1,7 +1,8 @@
 
 pub enum AttendanceType {
     CheckIn,
-    CheckOut
+    CheckOut,
+    Unknown
 }
 
 impl AttendanceType {
@@ -9,7 +10,15 @@ impl AttendanceType {
         match value {
             "出勤" => AttendanceType::CheckIn,
             "退勤" => AttendanceType::CheckOut,
-            _     => AttendanceType::CheckIn
+            _ => AttendanceType::Unknown
+        }
+    }
+
+    pub fn to_string(&self) -> String {
+        match *self {
+            AttendanceType::CheckIn  => "出勤".to_string(),
+            AttendanceType::CheckOut => "退勤".to_string(),
+            AttendanceType::Unknown  => "不正な打刻です".to_string()
         }
     }
 }
