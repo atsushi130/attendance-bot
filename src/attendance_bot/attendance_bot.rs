@@ -49,7 +49,9 @@ impl<'a> EventHandler for AttendanceBot<'a> {
             .map(|(type_string, channel)| (AttendanceTokenizer.tokenize(&type_string), channel))
             .map(|((user, type_string), channel)| (user, AttendanceType::from(&type_string), channel))
             .for_each(|(user, attendance_type, channel)| {
-                println!("@{}: {}", user, attendance_type.to_string());
+                if attendance_type == AttendanceType::Unknown { return }
+                let message = format!("@{} さんが {} に{}しました！", user, "00:00:00", attendance_type.to_string());
+                self.send(cli, channel, message.as_str())
             })
     }
 
