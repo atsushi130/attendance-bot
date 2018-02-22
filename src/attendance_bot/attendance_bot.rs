@@ -1,7 +1,7 @@
 
 use slack::{ Event, EventHandler, RtmClient };
 use std::marker::PhantomData;
-use super::AttendanceType;
+use super::{ AttendanceType, AttendanceTokenizer };
 
 pub struct AttendanceBot<'a> {
     phantom: PhantomData<&'a str>
@@ -46,9 +46,10 @@ impl<'a> EventHandler for AttendanceBot<'a> {
             .zip(maybe_channel.iter())
             .filter(|&(message, _)| self.to_me(message.as_str()))
             .map(|(message, channel)| (message.replace(format!("{} ", AttendanceBot::NAME).as_str(), ""), channel))
-            .map(|(type_string, channel)| (AttendanceType::from(&type_string), channel))
-            .for_each(|(attendance_type, channel)| {
-                println!("{}", attendance_type.to_string());
+            .map(|(type_string, channel)| (AttendanceTokenizer.tokenize(&type_string), channel))
+            .map(|((user, type_string), channel)| (user, AttendanceType::from(&type_string), channel))
+            .for_each(|(user, attendance_type, channel)| {
+                println!("@{}: {}", user, attendance_type.to_string());
             })
     }
 
