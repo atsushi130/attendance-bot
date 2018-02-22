@@ -2,6 +2,8 @@
 extern crate slack;
 use slack::RtmClient;
 
+extern crate chrono;
+
 mod attendance_bot;
 use attendance_bot::AttendanceBot;
 
