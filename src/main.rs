@@ -7,6 +7,8 @@ extern crate chrono;
 mod attendance_bot;
 use attendance_bot::AttendanceBot;
 
+mod extensions;
+
 fn main() {
 
     let args: Vec<String> = std::env::args().collect();
