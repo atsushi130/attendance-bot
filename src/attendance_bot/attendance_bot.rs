@@ -3,6 +3,7 @@ use slack::{ Event, EventHandler, RtmClient };
 use chrono::Local;
 use std::marker::PhantomData;
 use super::{ AttendanceType, AttendanceTokenizer };
+use api_client::{ AttendanceApi, Attendance };
 use extensions::DateTimeToString;
 
 pub struct AttendanceBot<'a> {
@@ -50,8 +51,14 @@ impl<'a> EventHandler for AttendanceBot<'a> {
             .map(|(message, channel)| (message.replace(format!("{} ", AttendanceBot::NAME).as_str(), ""), channel))
             .map(|(type_string, channel)| (AttendanceTokenizer.tokenize(&type_string), channel))
             .map(|((user, type_string), channel)| (user, AttendanceType::from(&type_string), channel))
+            .filter(|&(_, ref attendance_type, _)| *attendance_type != AttendanceType::Unknown)
             .for_each(|(user, attendance_type, channel)| {
-                if attendance_type == AttendanceType::Unknown { return }
+
+                // api request
+                let attendance = Attendance::from(&user, &Local::now().to_format_string(), &attendance_type.to_string());
+                AttendanceApi.register(&attendance);
+
+                // slack send
                 let message = format!("@{} さんが {} に{}しました！", user, Local::now().to_format_string(), attendance_type.to_string());
                 self.send(cli, channel, message.as_str())
             })
