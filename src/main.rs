@@ -2,11 +2,14 @@
 extern crate slack;
 use slack::RtmClient;
 
+extern crate hyper;
+extern crate hyper_native_tls;
 extern crate chrono;
 
 mod attendance_bot;
 use attendance_bot::AttendanceBot;
 
+mod api_client;
 mod extensions;
 
 fn main() {
