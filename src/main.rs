@@ -5,6 +5,7 @@ use slack::RtmClient;
 extern crate hyper;
 extern crate hyper_native_tls;
 extern crate chrono;
+extern crate rustc_serialize;
 
 mod attendance_bot;
 use attendance_bot::AttendanceBot;
