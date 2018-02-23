@@ -1,4 +1,6 @@
 
+#[derive(RustcEncodable)]
+#[derive(Debug)]
 pub struct Attendance {
     user: String,
     date: String,
