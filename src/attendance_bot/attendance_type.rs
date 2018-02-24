@@ -1,5 +1,5 @@
 
-#[derive(PartialEq, Eq)]
+#[derive(PartialEq, Eq, Copy, Clone)]
 pub enum AttendanceType {
     CheckIn,
     CheckOut,
@@ -7,10 +7,19 @@ pub enum AttendanceType {
 }
 
 impl AttendanceType {
+
     pub fn from(value: &str) -> Self {
         match value {
             "出勤" => AttendanceType::CheckIn,
             "退勤" => AttendanceType::CheckOut,
+            _ => AttendanceType::Unknown
+        }
+    }
+
+    pub fn from_id(id: i64) -> Self {
+        match id {
+            0 => AttendanceType::CheckIn,
+            1 => AttendanceType::CheckOut,
             _ => AttendanceType::Unknown
         }
     }
