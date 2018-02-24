@@ -7,6 +7,7 @@
 *.log
 *.bak
 *.tmp
+db.json
 
 # Created by https://www.gitignore.io/api/rust,intellij
 
