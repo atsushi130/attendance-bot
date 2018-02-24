@@ -1,5 +1,5 @@
 
-use chrono::{ DateTime, TimeZone, Timelike };
+use chrono::{ DateTime, TimeZone, Datelike, Timelike };
 
 pub trait DateTimeToString {
     fn to_format_string(&self) -> String;
@@ -9,10 +9,12 @@ pub trait DateTimeToString {
 impl<Tz: TimeZone> DateTimeToString for DateTime<Tz> {
 
     fn to_format_string(&self) -> String {
-        let hour = self.to_two_digits(self.hour());
+        let month  = self.to_two_digits(self.month());
+        let day    = self.to_two_digits(self.day());
+        let hour   = self.to_two_digits(self.hour());
         let minute = self.to_two_digits(self.minute());
         let second = self.to_two_digits(self.second());
-        format!("{}:{}:{}", hour, minute, second)
+        format!("{}/{}/{} {}:{}:{}", self.year(), month, day, hour, minute, second)
     }
 
     fn to_two_digits(&self, value: u32) -> String {
