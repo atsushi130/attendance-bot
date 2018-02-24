@@ -55,11 +55,11 @@ impl<'a> EventHandler for AttendanceBot<'a> {
             .for_each(|(user, attendance_type, channel)| {
 
                 // api request
-                let attendance = Attendance::from(&user, &Local::now().to_format_string(), &attendance_type.to_string());
+                let attendance = Attendance::from(&user, &Local::now().to_format_string(), &(attendance_type as i64));
                 AttendanceApi.register(&attendance);
 
                 // slack send
-                let message = format!("@{} さんが {} に{}しました！", user, Local::now().to_format_string(), attendance_type.to_string());
+                let message = format!("@{} さんが {} に *{}* しました！", user, Local::now().to_format_string(), attendance_type.to_string());
                 self.send(cli, channel, message.as_str())
             })
     }
