@@ -10,8 +10,8 @@ impl AttendanceType {
 
     pub fn from(value: &str) -> Self {
         match value {
-            "出勤" => AttendanceType::CheckIn,
-            "退勤" => AttendanceType::CheckOut,
+            "出勤" | "yo"  | "checkin"  => AttendanceType::CheckIn,
+            "退勤" | "bye" | "checkout" => AttendanceType::CheckOut,
             _ => AttendanceType::Unknown
         }
     }
