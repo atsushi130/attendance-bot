@@ -8,7 +8,7 @@ pub enum AttendanceType {
 
 impl AttendanceType {
 
-    pub fn from(value: &str) -> Self {
+    pub fn new(value: &str) -> Self {
         match value {
             "出勤" | "yo"  | "checkin"  => AttendanceType::CheckIn,
             "退勤" | "bye" | "checkout" => AttendanceType::CheckOut,

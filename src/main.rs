@@ -26,7 +26,7 @@ fn main() {
 
 fn connect(token: &str) {
 
-    let mut handler = AttendanceBot::from();
+    let mut handler = AttendanceBot::new();
     let r = RtmClient::login_and_run(&token, &mut handler);
     match r {
         Ok(_) => {}

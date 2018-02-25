@@ -15,7 +15,7 @@ impl<'a> AttendanceBot<'a> {
 
     const NAME: &'a str = "@attendance-bot";
 
-    pub fn from<'b>() -> AttendanceBot<'b> {
+    pub fn new<'b>() -> AttendanceBot<'b> {
         AttendanceBot {
             phantom: PhantomData
         }
@@ -50,12 +50,12 @@ impl<'a> EventHandler for AttendanceBot<'a> {
             .filter(|&(message, _)| self.to_me(message.as_str()))
             .map(|(message, channel)| (message.replace(format!("{} ", AttendanceBot::NAME).as_str(), ""), channel))
             .map(|(type_string, channel)| (AttendanceTokenizer.tokenize(&type_string), channel))
-            .map(|((user, type_string), channel)| (user, AttendanceType::from(&type_string), channel))
+            .map(|((user, type_string), channel)| (user, AttendanceType::new(&type_string), channel))
             .filter(|&(_, ref attendance_type, _)| *attendance_type != AttendanceType::Unknown)
             .for_each(|(user, attendance_type, channel)| {
 
                 // api request
-                let attendance = Attendance::from(&user, &Local::now().to_format_string(), &(attendance_type as i64));
+                let attendance = Attendance::new(&user, &Local::now().to_format_string(), &(attendance_type as i64));
                 AttendanceApi.register(&attendance);
 
                 // slack send
